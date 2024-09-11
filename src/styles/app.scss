@@ -1,0 +1,9 @@
+input, select, option {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;  
+}
+
+form > input, select, option, button {
+  @apply rounded-lg border-2 border-[#383838] bg-black p-1 text-gray-300 placeholder:text-gray-400 py-1.5;
+}
