@@ -197,5 +197,26 @@ export interface ItunesResult {
     currency: string;
     releaseDate: Date;
     primaryGenreName: string;
+    kind: string;
+    trackId: number;
+    trackName: string;
+    trackCensoredName: string;
+    collectionArtistId: number;
+    collectionArtistViewUrl: string;
+    trackViewUrl: string;
+    previewUrl: string;
+    artworkUrl30: string;
+    trackPrice: number;
+    trackRentalPrice: number;
+    collectionHdPrice: number;
+    trackHdPrice: number;
+    trackHdRentalPrice: number;
+    trackExplicitness: string;
+    discCount: number;
+    discNumber: number;
+    trackNumber: number;
+    trackTimeMillis: number;
+    longDescription: string;
+    hasITunesExtras: boolean;
   }[];
 }
