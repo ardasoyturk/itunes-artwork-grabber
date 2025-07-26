@@ -1,3 +1,16 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* Form element styling for better visibility */
+input[type="text"],
+select,
+button {
+  @apply border border-stone-600 rounded-md px-3 py-2 text-white;
+}
+
+button {
+  @apply cursor-pointer;
+}
+
+input[type="text"]::placeholder {
+  @apply text-gray-400;
+}

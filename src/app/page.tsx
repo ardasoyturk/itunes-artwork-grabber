@@ -1,7 +1,7 @@
 "use client";
 
 import "../styles/app.scss";
-import "react-toastify/ReactToastify.min.css";
+import "react-toastify/ReactToastify.css";
 import { countries, type CountryType, type ItunesResult } from "../constants";
 import Link from "next/link";
 import { useState } from "react";
