@@ -1,11 +1,10 @@
 "use client";
 
 import "../styles/app.scss";
-import "react-toastify/ReactToastify.css";
-import { countries, type CountryType, type ItunesResult } from "../constants";
 import Link from "next/link";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import { type CountryType, countries, type ItunesResult } from "../constants";
 
 export default function HomePage() {
   const [result, setResult] = useState(false);
@@ -18,15 +17,16 @@ export default function HomePage() {
 
   async function handleSubmit(formData: FormData) {
     setResult(false);
-    const entity = formData.get("entity")! as string;
-    const country = formData.get("country")! as string;
-    const query = formData.get("query")! as string;
+    const entity = (formData.get("entity") as string) || "tvSeason";
+    const country = (formData.get("country") as string) || "us";
+    const query = formData.get("query") as string;
 
     if (!query) {
-      return toast("No input given. Please try again.", {
+      toast("No input given. Please try again.", {
         type: "error",
         theme: "dark",
       });
+      return;
     }
 
     const response = await fetch(
@@ -39,18 +39,20 @@ export default function HomePage() {
     );
     const data = (await response.json()) as ItunesResult;
     if (!data.results || !response.ok) {
-      return toast("An error occured. Please try again later.", {
+      toast("An error occured. Please try again later.", {
         type: "error",
         theme: "dark",
       });
+      return;
     }
 
     const foundResult = data.results[0];
     if (!foundResult) {
-      return toast("Couldn't get a result. Please try again later.", {
+      toast("Couldn't get a result. Please try again later.", {
         type: "error",
         theme: "dark",
       });
+      return;
     }
     setResult(true);
     setArtistName(foundResult.artistName);
@@ -99,13 +101,15 @@ export default function HomePage() {
               <option value="gb">United Kingdom</option>
               {Object.keys(countries)
                 .filter((c) => !["us", "gb"].some((b) => b === c))
-                .map((c, i) => (
-                  <option key={i} value={c}>
+                .map((c) => (
+                  <option key={c} value={c}>
                     {countries[c as CountryType]}
                   </option>
                 ))}
             </select>
-            <button className="px-2">Do the magic ✨</button>
+            <button type="submit" className="px-2">
+              Do the magic ✨
+            </button>
           </form>
         </section>
         {result ? (
