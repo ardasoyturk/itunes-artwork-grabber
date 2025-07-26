@@ -20,7 +20,7 @@
     "@opennextjs/cloudflare": "^1.6.1",
     "@t3-oss/env-nextjs": "^0.13.8",
     "@tailwindcss/postcss": "^4.1.11",
-    "next": "^15.4.4",
+    "next": "15.3.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-toastify": "^11.0.5",
