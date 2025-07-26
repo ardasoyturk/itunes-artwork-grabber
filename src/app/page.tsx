@@ -133,7 +133,7 @@ export default function HomePage() {
 
       <footer className="w-full py-2 text-center">
         Made with ❤️ by{" "}
-        <a className="text-red-100" href="https://ardasoyturk.dev">
+        <a className="text-red-100" href="https://ardasoyturk.com">
           Arda Soyturk
         </a>
         , heavily inspired by{" "}
