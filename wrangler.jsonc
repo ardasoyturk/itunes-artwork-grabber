@@ -1,14 +1,14 @@
 {
     "$schema": "node_modules/wrangler/config-schema.json",
-    "main": ".open-next/worker.js",
+    "main": "dist/_worker.js/index.js",
     "name": "itunes-artwork-grabber",
-    "compatibility_date": "2025-07-26",
+    "compatibility_date": "2026-02-16",
     "compatibility_flags": [
         "nodejs_compat",
         "global_fetch_strictly_public",
     ],
     "assets": {
-        "directory": ".open-next/assets",
+        "directory": "dist",
         "binding": "ASSETS",
     },
 }

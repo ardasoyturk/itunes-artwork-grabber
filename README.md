@@ -10,4 +10,11 @@ I'd like to thank Ben Dodson for his great work at his own [iTunes Artwork Finde
 
 ## About the project stack
 
-I used Theo's [T3 Stack](https://create.t3.gg/) to build this app. It uses [Next.js](https://nextjs.org) and [TailwindCSS](https://tailwindcss.com).
+This project uses [Astro](https://astro.build) with [React](https://react.dev) islands and [Tailwind CSS](https://tailwindcss.com), and is deployed on [Cloudflare Workers](https://workers.cloudflare.com).
+
+## Scripts
+
+- `bun run dev`: Start Astro development server
+- `bun run build`: Build for Cloudflare Workers
+- `bun run preview`: Build and run with Wrangler locally
+- `bun run deploy`: Build and deploy with Wrangler

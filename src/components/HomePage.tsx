@@ -1,10 +1,9 @@
-"use client";
-
-import "../styles/app.scss";
-import Link from "next/link";
+import type { SubmitEvent } from "react";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { type CountryType, countries, type ItunesResult } from "../constants";
+import "../styles/app.scss";
 
 export default function HomePage() {
   const [result, setResult] = useState(false);
@@ -15,11 +14,14 @@ export default function HomePage() {
   const [standardResImage, setStandardResImage] = useState("");
   const [trackName, setTrackName] = useState("");
 
-  async function handleSubmit(formData: FormData) {
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
+    event.preventDefault();
     setResult(false);
+
+    const formData = new FormData(event.currentTarget);
     const entity = (formData.get("entity") as string) || "tvSeason";
     const country = (formData.get("country") as string) || "us";
-    const query = formData.get("query") as string;
+    const query = ((formData.get("query") as string) || "").trim();
 
     if (!query) {
       toast("No input given. Please try again.", {
@@ -30,15 +32,18 @@ export default function HomePage() {
     }
 
     const response = await fetch(
-      `/api?` +
-        new URLSearchParams({
-          entity: encodeURIComponent(entity),
-          country: country,
-          query: query,
-        }).toString(),
+      `/api?${new URLSearchParams({
+        entity,
+        country,
+        query,
+      }).toString()}`,
     );
-    const data = (await response.json()) as ItunesResult;
-    if (!data.results || !response.ok) {
+
+    const data = (await response
+      .json()
+      .catch(() => null)) as ItunesResult | null;
+
+    if (!data?.results || !response.ok) {
       toast("An error occured. Please try again later.", {
         type: "error",
         theme: "dark",
@@ -48,12 +53,13 @@ export default function HomePage() {
 
     const foundResult = data.results[0];
     if (!foundResult) {
-      toast("Couldn't get a result. Please try again later.", {
+      toast("Could not get a result. Please try again later.", {
         type: "error",
         theme: "dark",
       });
       return;
     }
+
     setResult(true);
     setArtistName(foundResult.artistName);
     setCollectionName(foundResult.collectionName);
@@ -65,9 +71,8 @@ export default function HomePage() {
     setHighResImage(
       foundResult.artworkUrl100.replace("100x100bb", "100000x100000-999"),
     );
-
-    console.log(data);
   }
+
   return (
     <main className="flex min-h-screen w-screen flex-1 flex-col items-center justify-center bg-black text-white">
       <ToastContainer />
@@ -78,7 +83,7 @@ export default function HomePage() {
           </h1>
           <form
             className="mx-auto mt-5 flex w-5/6 flex-col gap-2 md:w-full lg:flex-row"
-            action={handleSubmit}
+            onSubmit={handleSubmit}
           >
             <select name="entity" aria-label="Type selector">
               <option value="tvSeason">TV Show</option>
@@ -100,7 +105,7 @@ export default function HomePage() {
               <option value="us">United States of America</option>
               <option value="gb">United Kingdom</option>
               {Object.keys(countries)
-                .filter((c) => !["us", "gb"].some((b) => b === c))
+                .filter((c) => !["us", "gb"].includes(c))
                 .map((c) => (
                   <option key={c} value={c}>
                     {countries[c as CountryType]}
@@ -108,7 +113,7 @@ export default function HomePage() {
                 ))}
             </select>
             <button type="submit" className="px-2">
-              Do the magic ✨
+              Do the magic
             </button>
           </form>
         </section>
@@ -117,26 +122,34 @@ export default function HomePage() {
             {collectionName && artistName ? (
               <h1 className="text-center text-green-200">
                 Found:{" "}
-                <Link href={collectionUrl ?? "https://google.com"}>
+                <a
+                  href={collectionUrl || "https://google.com"}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   <span className="text-yellow-200">{artistName}</span>{" "}
                   <span className="text-white">-</span>{" "}
                   <span className="text-yellow-200">
-                    {trackName ?? collectionName}
+                    {trackName || collectionName}
                   </span>
-                </Link>
+                </a>
               </h1>
             ) : null}
             <div className="w-5/6 text-center text-red-300 sm:w-full">
-              <Link href={highResImage}>Uncompressed High Resolution</Link>{" "}
+              <a href={highResImage} target="_blank" rel="noreferrer">
+                Uncompressed High Resolution
+              </a>{" "}
               <span className="text-white">-</span>{" "}
-              <Link href={standardResImage}>Standard Resolution</Link>
+              <a href={standardResImage} target="_blank" rel="noreferrer">
+                Standard Resolution
+              </a>
             </div>
           </section>
         ) : undefined}
       </div>
 
       <footer className="w-full py-2 text-center">
-        Made with ❤️ by{" "}
+        Made by{" "}
         <a className="text-red-100" href="https://ardasoyturk.com">
           Arda Soyturk
         </a>

@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  font-family: "IBM Plex Mono", monospace;
+}
+
 /* Form element styling for better visibility */
 input[type="text"],
 select,
